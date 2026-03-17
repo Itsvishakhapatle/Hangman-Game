@@ -1,40 +1,55 @@
-
-
 import random
 
-# List of words to guess
-words = ['python', 'java', 'kotlin', 'javascript', 'ruby', 'swift']
+# Word list with hints
+words = {
+    "python": "Programming language",
+    "apple": "A fruit",
+    "tiger": "A wild animal",
+    "india": "A country",
+    "laptop": "Electronic device",
+    "ocean": "Large water body",
+    "doctor": "Medical professional"
+}
 
-# Randomly choose a word from the list
-chosen_word = random.choice(words)
-word_display = ['_' for _ in chosen_word]  # Create a list of underscores
-attempts = 8  # Number of allowed attempts
+# Choose random word
+word = random.choice(list(words.keys()))
+hint = words[word]
 
-print("Welcome to Hangman!")
+guessed_letters = []
+tries = 6
 
-while attempts > 0 and '_' in word_display:
-    print("\n" + ' '.join(word_display))
-    guess = input("Guess a letter: ").lower()
+print("🎮 Welcome to Hangman Game!")
+print(f"💡 Hint: {hint}")
 
-    # Check if the guessed letter is in the chosen word
-    if guess in chosen_word:
-        for index, letter in enumerate(chosen_word):
-            if letter == guess:
-                word_display[index] = guess  # Reveal the letter
+# Display blank word
+display_word = ["_"] * len(word)
+
+while tries > 0:
+    print("\nWord: " + " ".join(display_word))
+    guess = input("Enter a letter: ").lower()
+
+    # Check if already guessed
+    if guess in guessed_letters:
+        print("⚠️ You already guessed that letter!")
+        continue
+
+    guessed_letters.append(guess)
+
+    # Correct guess
+    if guess in word:
+        print("✅ Correct guess!")
+        for i in range(len(word)):
+            if word[i] == guess:
+                display_word[i] = guess
     else:
-        print("That letter doesn't appear in the word.")
-        attempts -= 1
+        tries -= 1
+        print(f"❌ Wrong guess! Attempts left: {tries}")
 
-    # Check for repeated guesses or invalid input
-    # Note: This simple version does not handle repeated guesses or validate input.
-    # Consider adding these features for a more complete game experience.
+    # Check win
+    if "_" not in display_word:
+        print("\n🎉 Congratulations! You guessed the word:", word)
+        break
 
-# Game conclusion
-if '_' not in word_display:
-    print("You guessed the word!")
-    print(' '.join(word_display))
-    print("You survived!")
-else:
-    print("You ran out of attempts. The word was: " + chosen_word)
-    print("You lost!")
-
+# If lost
+if "_" in display_word:
+    print("\n💀 Game Over! The word was:", word)
