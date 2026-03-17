@@ -18,8 +18,8 @@ hint = words[word]
 guessed_letters = []
 tries = 6
 
-print("🎮 Welcome to Hangman Game!")
-print(f"💡 Hint: {hint}")
+print("Welcome to Hangman Game!")
+print(f" Hint: {hint}")
 
 # Display blank word
 display_word = ["_"] * len(word)
@@ -30,26 +30,26 @@ while tries > 0:
 
     # Check if already guessed
     if guess in guessed_letters:
-        print("⚠️ You already guessed that letter!")
+        print("You already guessed that letter!")
         continue
 
     guessed_letters.append(guess)
 
     # Correct guess
     if guess in word:
-        print("✅ Correct guess!")
+        print("Correct guess!")
         for i in range(len(word)):
             if word[i] == guess:
                 display_word[i] = guess
     else:
         tries -= 1
-        print(f"❌ Wrong guess! Attempts left: {tries}")
+        print(f" Wrong guess! Attempts left: {tries}")
 
     # Check win
     if "_" not in display_word:
-        print("\n🎉 Congratulations! You guessed the word:", word)
+        print("\n Congratulations! You guessed the word:", word)
         break
 
 # If lost
 if "_" in display_word:
-    print("\n💀 Game Over! The word was:", word)
+    print("\n Game Over! The word was:", word)
