@@ -11,45 +11,45 @@ words = {
     "doctor": "Medical professional"
 }
 
-# Choose random word
-word = random.choice(list(words.keys()))
-hint = words[word]
+def play_game():
+    word = random.choice(list(words.keys()))
+    hint = words[word]
 
-guessed_letters = []
-tries = 6
+    guessed_letters = []
+    tries = 6
 
-print("Welcome to Hangman Game!")
-print(f" Hint: {hint}")
+    print("\nNew Game Started!")
+    print(f"Hint: {hint}")
 
-# Display blank word
-display_word = ["_"] * len(word)
+    while tries > 0:
+        guess = input("Enter a letter: ").lower()
 
-while tries > 0:
-    print("\nWord: " + " ".join(display_word))
-    guess = input("Enter a letter: ").lower()
+        if guess in guessed_letters:
+            print("You already guessed that letter!")
+            continue
 
-    # Check if already guessed
-    if guess in guessed_letters:
-        print("You already guessed that letter!")
-        continue
+        guessed_letters.append(guess)
 
-    guessed_letters.append(guess)
+        if guess in word:
+            print(f"Correct! The word was '{word}'")
+            return True   # End immediately after correct guess
+        else:
+            tries -= 1
+            print(f"Wrong guess! Attempts left: {tries}")
 
-    # Correct guess
-    if guess in word:
-        print("Correct guess!")
-        for i in range(len(word)):
-            if word[i] == guess:
-                display_word[i] = guess
+    print(f"\nGame Over! The word was: {word}")
+    return False
+
+
+# Main loop
+while True:
+    result = play_game()
+
+    if result:
+        choice = input("\nDo you want to play again? (yes/no): ").lower()
+        if choice != "yes":
+            print("Thankuu for playing!")
+            break
     else:
-        tries -= 1
-        print(f" Wrong guess! Attempts left: {tries}")
-
-    # Check win
-    if "_" not in display_word:
-        print("\n Congratulations! You guessed the word:", word)
+        print("Thankuu for playing!")
         break
-
-# If lost
-if "_" in display_word:
-    print("\n Game Over! The word was:", word)
